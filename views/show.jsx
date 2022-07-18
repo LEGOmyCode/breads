@@ -15,10 +15,11 @@ function Show({bread, index}){
                 have gluten.
             </p>
             <img src = {bread.image} alt ={bread.name}/> 
-            <form method="POST" action= {`/breads/${bread.id}?_method=DELETE`}>
+            <p>Baked by {bread.baker}</p>
+            <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
+             <form method="POST" action= {`/breads/${bread.id}?_method=DELETE`}>
                 <button type="submit" value="DELETE"> Delete </button>
             </form>
-            <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
             <li><a href = "/breads"> Go Home </a></li>
         </Default>
     )
