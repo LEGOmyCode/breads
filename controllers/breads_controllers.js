@@ -10,12 +10,6 @@ breads.get('/', (req, res) => {
     title: 'Index Page'
   })
 })
-    /*res.render('Index',
-        {
-            breads: Bread,
-            title: 'Index Page'
-        }
-    )*/
 })
 
 //New
@@ -24,36 +18,12 @@ breads.get('/new', (req, res) => {
     res.render('new')
 })
 
-// SHOW
-/*breads.get('/:arrayIndex', (req, res) => {
-  if (Bread[req.params.arrayIndex]) {
-    res.render('Show', {
-      bread:Bread[req.params.arrayIndex],
-      index: req.params.arrayIndex,
-    })
-  } else {
-    res.render('404')
-  }
-})
-*/
 breads.get('/:id',(req, res) => {
-  Bread.findById (req.params.id).then(foundBread =>{ 
-    res.render('show',{bread:foundBread})
-  })
+  Bread.findById (req.params.id)
+    .then(foundBread =>{ 
+      res.render('show',{bread:foundBread})})
+      .catch(err => {res.send('404')})
 })
-.catch(err => {
-  res.send('404')
-})
-/*//Create
-breads.post('/',(req, res) => {
-    if(req.body.hasGluten === "on"){
-        req.body.hasGluten === 'true'
-    }else{
-        req.body.hasGluten === 'false'
-    }
-    Bread.push(req.body)
-    res.redirect('/breads')
-}) */
 
 // CREATE
 breads.post('/', (req, res) => {
@@ -69,10 +39,25 @@ breads.post('/', (req, res) => {
   res.redirect('/breads')
 })
 
+breads.put('/:id',(req, res) => {
+  if(req.body.hasGluten === 'on') {
+    req.body.hasGluten = true
+  } else {
+    req.body.hasGluten = false
+  }
+  Bread.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then(updatedBread => {
+    console.log(updatedBread)
+    res.redirect(`/breads/${req.params.id}`)
+  })
+})
+
 //DELETE
-breads.delete('/:indexArray', (req, res) => {
-    Bread.splice(req.params.indexArray, 1)
-    res.status(303).redirect('/breads')
+breads.delete('/:id', (req, res) => {
+    Bread.findByIdAndDelete(req.params.id)
+    .then(deleteBread => {
+      res.status(303).redirect('/breads')
+    })
 })
 
 module.exports = breads
