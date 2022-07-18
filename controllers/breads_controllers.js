@@ -39,6 +39,16 @@ breads.post('/', (req, res) => {
   res.redirect('/breads')
 })
 
+//Update
+breads.get('/:id/edit', (req, res) => {
+  Bread.findById(req.params.id) 
+    .then(foundBread => { 
+      res.render('edit', {
+        bread: foundBread 
+      })
+    })
+})
+
 breads.put('/:id',(req, res) => {
   if(req.body.hasGluten === 'on') {
     req.body.hasGluten = true
@@ -51,6 +61,7 @@ breads.put('/:id',(req, res) => {
     res.redirect(`/breads/${req.params.id}`)
   })
 })
+
 
 //DELETE
 breads.delete('/:id', (req, res) => {
