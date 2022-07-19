@@ -49,12 +49,17 @@ breads.post('/', (req, res) => {
 
 //Update
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id) 
+  Baker.find()
+  .then(foundBakers => {
+    Bread.findById(req.params.id) 
     .then(foundBread => { 
       res.render('edit', {
-        bread: foundBread 
+        bread: foundBread,
+        bakers: foundBakers
       })
     })
+  })
+  
 })
 
 breads.put('/:id',(req, res) => {
