@@ -25,6 +25,7 @@ breads.get('/new', (req, res) => {
 //Show
 breads.get('/:id',(req, res) => {
   Bread.findById (req.params.id)
+  .populate('baker')
     .then(foundBread =>{ 
       const bakedBy = foundBread.getBakedBy()
       console.log(bakedBy)
