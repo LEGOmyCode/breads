@@ -4,6 +4,20 @@ const baker = express.Router()
 const Baker = require('../models/baker.js')
 const bakerSeedData =  require('../models/baker_seed.js')
 
+
+baker.get('/data/seed', (req, res) => {
+    Baker.insertMany(bakerSeedData)
+    .then(res.redirect('/breads'))
+})
+
+baker.get('/:id', (req, res) => {
+    Baker.findById(req.params.id).populate('breads').then(foundBaker => {
+        res.render('bakerShow', {
+            baker:foundBaker
+        })
+    })
+})
+
 baker.get('/', (req, res) => {
     Baker.find()
         .populate('breads')
@@ -12,10 +26,6 @@ baker.get('/', (req, res) => {
         })
 })
 
-baker.get('/data/seed', (req, res) => {
-    Baker.insertMany(bakerSeedData)
-    .then(res.redirect('/breads'))
-})
 
 //Exports
 module.exports = baker
